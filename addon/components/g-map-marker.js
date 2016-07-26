@@ -2,7 +2,15 @@ import Ember from 'ember';
 import layout from '../templates/components/g-map-marker';
 import GMapComponent from './g-map';
 
-const { isEmpty, isPresent, observer, computed, run, assert, typeOf } = Ember;
+const {
+  isEmpty,
+  isPresent,
+  observer,
+  computed,
+  run,
+  assert,
+  typeOf
+} = Ember;
 
 const GMapMarkerComponent = Ember.Component.extend({
   layout: layout,
@@ -31,6 +39,7 @@ const GMapMarkerComponent = Ember.Component.extend({
       this.set('marker', marker);
     }
     this.setPosition();
+    this.setZIndex();
     this.setIcon();
     this.setLabel();
     this.setTitle();
@@ -116,9 +125,9 @@ const GMapMarkerComponent = Ember.Component.extend({
     const lng = this.get('lng');
 
     if (isPresent(marker) &&
-        isPresent(lat) &&
-        isPresent(lng) &&
-        (typeof FastBoot === 'undefined')) {
+      isPresent(lat) &&
+      isPresent(lng) &&
+      (typeof FastBoot === 'undefined')) {
       const position = new google.maps.LatLng(lat, lng);
       marker.setPosition(position);
     }
@@ -134,6 +143,14 @@ const GMapMarkerComponent = Ember.Component.extend({
 
     if (isPresent(marker) && isPresent(icon)) {
       marker.setIcon(icon);
+    }
+  },
+
+  setZIndex() {
+    const marker = this.get('marker');
+    const zIndex = this.get('zIndex');
+    if (isPresent(marker) && isPresent(zIndex)) {
+      marker.setZIndex(zIndex);
     }
   },
 
@@ -171,7 +188,9 @@ const GMapMarkerComponent = Ember.Component.extend({
   },
 
   sendOnClick() {
-    const { onClick } = this.attrs;
+    const {
+      onClick
+    } = this.attrs;
     const mapContext = this.get('mapContext');
     const group = this.get('group');
 
